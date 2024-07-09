@@ -1,7 +1,8 @@
+import type { Entry } from '@/types';
 import { createContext } from 'react';
 
 export interface EntriesContextProps {
-  entries: []
+  entries: Entry[]
 }
 
 export const EntriesContext = createContext<EntriesContextProps>({} as EntriesContextProps);

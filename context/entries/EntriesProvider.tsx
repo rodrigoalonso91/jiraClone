@@ -1,12 +1,33 @@
 import { PropsWithChildren, useReducer } from "react";
 import { EntriesContext, entriesReducer } from ".";
+import type { Entry } from "@/types";
+import { uuid } from "@/plugins";
 
 export interface EntriesState {
-  entries: [];
+  entries: Entry[];
 }
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
-  entries: []
+  entries: [
+    {
+      _id: uuid(),
+      description: 'Planificar un proyecto de OpenJira',
+      status: 'pending',
+      createdAt: Date.now()
+    },
+    {
+      _id: uuid(),
+      description: 'Hacer las pruebas de OpenJira',
+      status: 'in-progress',
+      createdAt: Date.now()
+    },
+    {
+      _id: uuid(),
+      description: 'Corregir bugs de OpenJira',
+      status: 'finished',
+      createdAt: Date.now()
+    },
+  ]
 }
 
 export default function EntriesProvider({ children }: PropsWithChildren) {
