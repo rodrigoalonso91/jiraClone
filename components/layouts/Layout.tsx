@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
-import { Navbar } from '../ui';
+import { Navbar, Sidebar } from '../ui';
 
 interface Props extends PropsWithChildren {
   title?: string
@@ -19,6 +19,7 @@ export function Layout({ children, title = 'OpenJira' }: Props) {
       </Head>
 
       <Navbar />
+      <Sidebar />
 
       <Box sx={{ padding: '10px 20px' }}>
         {children}
