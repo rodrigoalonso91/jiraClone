@@ -1,8 +1,9 @@
 import { Layout } from "@/components/layouts";
-import { EntryList } from "@/components/ui";
+import { EntryList, NewEntry } from "@/components/ui";
 import { Card, CardHeader, Grid } from "@mui/material";
 
 export default function HomePage() {
+
   return (
     <Layout>
       <Grid container spacing={2}>
@@ -10,6 +11,7 @@ export default function HomePage() {
         <Grid item xs={12} sm={4}>
           <Card sx={{ height: 'calc(100vh - 100px)' }}>
             <CardHeader title="Pendientes" />
+            <NewEntry />
             <EntryList status="pending" />
           </Card>
         </Grid>
