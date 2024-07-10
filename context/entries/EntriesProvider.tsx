@@ -11,19 +11,19 @@ const ENTRIES_INITIAL_STATE: EntriesState = {
   entries: [
     {
       _id: uuid(),
-      description: 'Planificar un proyecto de OpenJira',
+      description: 'Pendiente: Planificar un proyecto de OpenJira',
       status: 'pending',
       createdAt: Date.now()
     },
     {
       _id: uuid(),
-      description: 'Hacer las pruebas de OpenJira',
+      description: 'En progreso: Hacer las pruebas de OpenJira',
       status: 'in-progress',
       createdAt: Date.now()
     },
     {
       _id: uuid(),
-      description: 'Corregir bugs de OpenJira',
+      description: 'Terminada: Corregir bugs de OpenJira',
       status: 'finished',
       createdAt: Date.now()
     },
