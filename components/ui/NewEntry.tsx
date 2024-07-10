@@ -1,10 +1,26 @@
+import { ChangeEvent, useState } from "react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
-interface Props {}
+interface Props { }
 
-export function NewEntry({}: Props) {
+export function NewEntry({ }: Props) {
+
+  const [ isAdding, setIsAdding ] = useState(false);
+  const [ inputValue, setInputValue ] = useState('');
+  const [ touched, setTouched ] = useState(false);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    setTouched(true);
+  }
+
+  const onSave = () => {
+    if (inputValue.length === 0) return;
+    console.log({ inputValue });
+  }
+
   return (
     <Box
       sx={{
@@ -12,42 +28,60 @@ export function NewEntry({}: Props) {
         paddingX: 2
       }}
     >
+      {
+        isAdding 
+        ? (
+          <>
+            <TextField
+              value={inputValue}
+              onChange={handleChange}
+              onBlur={() => setTouched(false)}
+              fullWidth
+              placeholder="Nueva entrada"
+              autoFocus
+              multiline
+              label="Nueva entrada"
+              helperText={!inputValue && touched && 'Ingrese un valor'}
+              error={touched && !inputValue}
+              sx={{
+                marginTop: 2,
+                marginBottom: 1
+              }}
+            />
 
-      <Button
-        startIcon={<AddIcon />}
-        fullWidth
-        variant="outlined"
-      >
-        Agregar tarea
-      </Button>
-
-      <TextField
-        fullWidth
-        placeholder="Nueva entrada"
-        autoFocus
-        multiline
-        label="Nueva entrada"
-        helperText="Ingrese un valor"
-        sx={{
-          marginTop: 2,
-          marginBottom: 1
-        }}
-      />
-
-      <Stack direction="row" justifyContent="space-between">
-        <Button
-          variant="text"
-        >
-          Cancelar
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          endIcon={<SaveOutlinedIcon />}
-        >
-          Guardar
-        </Button>
-      </Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Button
+                variant="text"
+                onClick={() => {
+                  setIsAdding(false);
+                  setTouched(false);
+                  setInputValue('');
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                endIcon={<SaveOutlinedIcon />}
+                onClick={onSave}
+              >
+                Guardar
+              </Button>
+            </Stack>
+          </>
+        )
+        : (
+          <Button
+            startIcon={<AddIcon />}
+            fullWidth
+            variant="outlined"
+            onClick={() => setIsAdding(true)}
+          >
+            Agregar tarea
+          </Button>
+        )
+      }
     </Box>
   )
 }
