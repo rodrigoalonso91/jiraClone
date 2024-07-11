@@ -1,14 +1,25 @@
 import type { Entry } from "@/types";
 import { Card, CardActionArea, CardActions, CardContent, Typography } from "@mui/material";
+import { DragEvent } from "react";
 
 interface Props {
   entry: Entry
 }
 
 export function EntryCard({ entry }: Props) {
+
+  const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.setData('text', entry._id);
+  }
+
+  const handleDragEnd = () => {}
+
   return (
     <Card
       sx={{ mb: 1}}
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
     >
       <CardActionArea>
         <CardContent>
