@@ -7,6 +7,10 @@ export interface UIContextProps {
 
   isAddingEntry: boolean;
   setIsAddingEntry: (isAdding: boolean) => void;
+
+  startDragging: () => void;
+  endDragging: () => void;
+  isDragging: boolean;
 }
 
 export const UIContext = createContext<UIContextProps>({} as UIContextProps);
