@@ -1,18 +1,20 @@
 import { ChangeEvent, useContext, useState } from "react";
 import { Box, Button, Stack, TextField } from "@mui/material";
+import { EntriesContext } from "@/context/entries";
+import { UIContext } from "@/context/ui";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { EntriesContext } from "@/context/entries";
 
 interface Props { }
 
 export function NewEntry({}: Props) {
 
-  const [ isAdding, setIsAdding ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
   const [ touched, setTouched ] = useState(false);
 
   const { addEntry } = useContext(EntriesContext);
+  const { isAddingEntry, setIsAddingEntry } = useContext(UIContext);
+  
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setTouched(true);
@@ -21,7 +23,7 @@ export function NewEntry({}: Props) {
   const onSave = () => {
     if (inputValue.length === 0) return;
     addEntry(inputValue);
-    setIsAdding(false);
+    setIsAddingEntry(false);
     setTouched(false);
     setInputValue('');
   }
@@ -34,7 +36,7 @@ export function NewEntry({}: Props) {
       }}
     >
       {
-        isAdding 
+        isAddingEntry 
         ? (
           <>
             <TextField
@@ -58,7 +60,7 @@ export function NewEntry({}: Props) {
               <Button
                 variant="text"
                 onClick={() => {
-                  setIsAdding(false);
+                  setIsAddingEntry(false);
                   setTouched(false);
                   setInputValue('');
                 }}
@@ -81,7 +83,7 @@ export function NewEntry({}: Props) {
             startIcon={<AddIcon />}
             fullWidth
             variant="outlined"
-            onClick={() => setIsAdding(true)}
+            onClick={() => setIsAddingEntry(true)}
           >
             Agregar tarea
           </Button>
