@@ -1,16 +1,18 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { EntriesContext } from "@/context/entries";
 
 interface Props { }
 
-export function NewEntry({ }: Props) {
+export function NewEntry({}: Props) {
 
   const [ isAdding, setIsAdding ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
   const [ touched, setTouched ] = useState(false);
 
+  const { addEntry } = useContext(EntriesContext);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setTouched(true);
@@ -18,7 +20,10 @@ export function NewEntry({ }: Props) {
 
   const onSave = () => {
     if (inputValue.length === 0) return;
-    console.log({ inputValue });
+    addEntry(inputValue);
+    setIsAdding(false);
+    setTouched(false);
+    setInputValue('');
   }
 
   return (
