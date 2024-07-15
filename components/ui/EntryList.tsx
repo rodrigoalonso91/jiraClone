@@ -12,16 +12,20 @@ interface Props {
 
 export function EntryList({ status }: Props) {
 
-  const { entries } = useContext(EntriesContext);
-  const { isDragging } = useContext(UIContext);
+  const { entries, updateEntry } = useContext(EntriesContext);
+  const { isDragging, endDragging } = useContext(UIContext);
 
   const entriesByStatus = useMemo(() => entries.filter(entry => entry.status === status), [entries]);
 
   const handleOnDrop = (e: DragEvent<HTMLDivElement>) => {
     const id = e.dataTransfer.getData('text');
+    const entry = entries.find(entry => entry._id === id)!;
+    entry.status = status;
+    updateEntry(entry);
+    endDragging();
   }
 
-  const allowDrag = (e: DragEvent<HTMLDivElement>) => {
+  const allowDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   }
 
@@ -29,7 +33,7 @@ export function EntryList({ status }: Props) {
     <div
       className={isDragging ? styles.dragging : ''}
       onDrop={handleOnDrop}
-      onDragOver={allowDrag}
+      onDragOver={allowDrop}
     >
       <Paper
         sx={{

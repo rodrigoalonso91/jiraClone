@@ -45,10 +45,15 @@ export default function EntriesProvider({ children }: PropsWithChildren) {
     dispatch({ type: '[Entry] Add Entry', payload: newEntry })
   }
 
+  const updateEntry = (entry: Entry) => {
+    dispatch({ type: '[Entry] Update Entry', payload: entry })
+  }
+
   return (
     <EntriesContext.Provider value={{
       ...state,
       addEntry,
+      updateEntry
     }}>
       {children}
     </EntriesContext.Provider>
