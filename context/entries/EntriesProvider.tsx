@@ -1,33 +1,15 @@
-import { PropsWithChildren, useReducer } from "react";
+import { PropsWithChildren, useEffect, useReducer } from "react";
 import { EntriesContext, entriesReducer } from ".";
 import type { Entry } from "@/types";
 import { uuid } from "@/plugins";
+import { entriesApi } from "@/apis";
 
 export interface EntriesState {
   entries: Entry[];
 }
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuid(),
-      description: 'Pendiente: Planificar un proyecto de OpenJira',
-      status: 'pending',
-      createdAt: Date.now()
-    },
-    {
-      _id: uuid(),
-      description: 'En progreso: Hacer las pruebas de OpenJira',
-      status: 'in-progress',
-      createdAt: Date.now()
-    },
-    {
-      _id: uuid(),
-      description: 'Terminada: Corregir bugs de OpenJira',
-      status: 'finished',
-      createdAt: Date.now()
-    },
-  ]
+  entries: []
 }
 
 export default function EntriesProvider({ children }: PropsWithChildren) {
@@ -48,6 +30,16 @@ export default function EntriesProvider({ children }: PropsWithChildren) {
   const updateEntry = (entry: Entry) => {
     dispatch({ type: '[Entry] Update Entry', payload: entry })
   }
+
+  const refreshEntries = async () => {
+    const { data } = await entriesApi.get<Entry[]>('/entries');
+    dispatch({ type: '[Entry] Refresh Entries', payload: data })
+  }
+
+  useEffect(() => {
+    refreshEntries();
+  }, [])
+
 
   return (
     <EntriesContext.Provider value={{
