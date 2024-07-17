@@ -1,4 +1,4 @@
-import { db, seedData } from "@/database";
+import { db } from "@/database";
 import { EntryModel } from "@/models";
 import { Entry } from "@/types";
 import { NextApiRequest, NextApiResponse } from "next";
