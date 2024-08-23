@@ -1,6 +1,7 @@
 import { UIContext } from "@/context/ui";
 import type { Entry } from "@/types";
 import { Card, CardActionArea, CardActions, CardContent, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import { DragEvent, useContext } from "react";
 
 interface Props {
@@ -9,7 +10,8 @@ interface Props {
 
 export function EntryCard({ entry }: Props) {
 
-  const { endDragging, startDragging } = useContext(UIContext)
+  const router = useRouter();
+  const { endDragging, startDragging } = useContext(UIContext);
 
   const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
     event.dataTransfer.setData('text', entry._id);
@@ -20,12 +22,17 @@ export function EntryCard({ entry }: Props) {
     endDragging();
   }
 
+  const handleClick = () => {
+    router.push(`/entries/${entry._id}`);
+  }
+
   return (
     <Card
       sx={{ mb: 1}}
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onClick={handleClick}
     >
       <CardActionArea>
         <CardContent>

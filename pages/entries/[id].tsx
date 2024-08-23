@@ -1,14 +1,22 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Layout } from "@/components/layouts";
-import { EntryStatus } from "@/types";
+import type { Entry, EntryStatus } from "@/types";
 import { capitalize, Button, Card, CardActions, CardContent, CardHeader, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
+import { EntriesContext } from "@/context/entries";
+import { GetServerSideProps } from "next";
+import { dbentries } from "@/database";
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
-export default function EntryPage() {
+interface Props {
+  entry: Entry
+}
+export default function EntryPage({ entry }: Props) {
 
-  const [ inputValue, setInputValue ] = useState('');
-  const [ status, setStatus ] = useState<EntryStatus>('pending');
+  const { updateEntry } = useContext(EntriesContext);
+
+  const [ inputValue, setInputValue ] = useState(entry.description);
+  const [ status, setStatus ] = useState<EntryStatus>(entry.status);
   const [ touched, setTouched ] = useState(false);
 
   const onTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +29,16 @@ export default function EntryPage() {
   }
 
   const handleSave = () => {
-    
+
+    if (inputValue.trim().length === 0) return;
+
+    const updatedEntry = {
+      ...entry,
+      status,
+      description: inputValue
+    }
+
+    updateEntry(updatedEntry, true);
   }
 
   return (
@@ -84,4 +101,27 @@ export default function EntryPage() {
       </Grid>
     </Layout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    
+  const { id } = params as { id: string };
+  
+  const entry = await dbentries.getEntryById( id );
+
+
+  if ( !entry ) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {
+      entry
+    }
+  }
 }

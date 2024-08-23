@@ -1,6 +1,7 @@
 import { UIContext } from "@/context/ui";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import NextLink from "next/link";
 import { useContext } from "react";
 
 interface Props {}
@@ -20,7 +21,9 @@ export function Navbar({}: Props) {
         >
           <MenuOutlinedIcon />
         </IconButton>
-        <Typography variant="h6">Open Jira</Typography>
+        <NextLink href="/" passHref style={{ textDecoration: 'none', color: 'white'}}>
+          <Typography variant="h6">Open Jira</Typography>
+        </NextLink>
       </Toolbar>
     </AppBar>
   )
